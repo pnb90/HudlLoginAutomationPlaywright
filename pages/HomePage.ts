@@ -1,6 +1,7 @@
 import { Locator, Page } from "@playwright/test";
+import { BasePage } from "./BasePage";
 
-export class HomePage {
+export class HomePage extends BasePage {
   loginButton: Locator;
   hudlLogin: Locator;
   wyscoutLogin: Locator;
@@ -14,6 +15,7 @@ export class HomePage {
   titanLogin: Locator;
 
   constructor(page: Page) {
+    super(page);
     this.loginButton = page.getByTestId("login-select");
     this.hudlLogin = page.getByTestId("login-hudl");
     this.wyscoutLogin = page.getByTestId("login-wyscout");
@@ -26,4 +28,6 @@ export class HomePage {
     this.balltimeLogin = page.getByTestId("login-balltime");
     this.titanLogin = page.getByTestId("login-titan");
   }
+
+  
 }
