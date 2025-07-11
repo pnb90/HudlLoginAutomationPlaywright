@@ -1,6 +1,6 @@
 import { Locator, Page } from "@playwright/test";
 
-export class LandingPage {
+export class HomePage {
   loginButton: Locator;
   hudlLogin: Locator;
   wyscoutLogin: Locator;
@@ -26,7 +26,4 @@ export class LandingPage {
     this.balltimeLogin = page.getByTestId("login-balltime");
     this.titanLogin = page.getByTestId("login-titan");
   }
-
-
-  
 }
