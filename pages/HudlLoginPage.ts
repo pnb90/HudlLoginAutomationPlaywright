@@ -9,6 +9,8 @@ export class HudlLoginPage extends BasePage {
   googleLoginButton: Locator;
   facebookLoginButton: Locator;
   appleLoginButton: Locator;
+  invalidEmailError: Locator;
+  incorrectPasswordError: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -19,14 +21,23 @@ export class HudlLoginPage extends BasePage {
     this.googleLoginButton = this.page.locator('button[data-provider="google"]');
     this.facebookLoginButton = this.page.locator('button[data-provider="facebook"]');
     this.appleLoginButton = this.page.locator('button[data-provider="apple"]');
+    this.invalidEmailError = this.page.locator("span#error-element-username");
+    this.incorrectPasswordError = this.page.locator("span#error-element-password");
   }
 
   async loginViaEmail(email: string, password: string): Promise<void> {
+    await this.enterInEmail(email);
+    await this.enterInPassword(password);
+    await this.page.waitForLoadState("networkidle");
+  }
+
+  async enterInEmail(email: string): Promise<void> {
     await this.emailInput.fill(email);
     await this.continueButton.click();
+  }
 
+  async enterInPassword(password: string): Promise<void> {
     await this.passwordInput.fill(password);
     await this.continueButton.click();
-    await this.page.waitForURL('**/home')
-}
+  }
 }
