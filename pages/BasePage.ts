@@ -1,14 +1,19 @@
 import { Page } from "@playwright/test";
 
-export class BasePage {
+export abstract class BasePage {
   page: Page;
 
   constructor(page: Page) {
     this.page = page;
   }
 
-  async navigate(url?: string): Promise<void> {
-    await this.page.goto(url ? url : "https://www.hudl.com/");
+  async waitForUrl(url: string): Promise<void> {
+    await this.page.waitForURL(url);
+  }
+
+  async navigate(url: string): Promise<void> {
+    await this.page.goto(url);
+    await this.waitForUrl(url);
   }
 
   async getCurrentUrl(): Promise<string> {
