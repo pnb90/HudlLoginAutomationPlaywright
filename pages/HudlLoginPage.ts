@@ -2,6 +2,7 @@ import { Locator, Page } from "@playwright/test";
 import { BasePage } from "./BasePage";
 
 export class HudlLoginPage extends BasePage {
+  loginForm: Locator;
   emailInput: Locator;
   passwordInput: Locator;
   continueButton: Locator;
@@ -14,9 +15,10 @@ export class HudlLoginPage extends BasePage {
 
   constructor(page: Page) {
     super(page);
-    this.emailInput = this.page.locator("input[inputmode='email']");
-    this.passwordInput = this.page.locator("input#password");
-    this.continueButton = this.page.getByRole("button", { name: "Continue", exact: true });
+    this.loginForm = this.page.locator('form[class*="_form-login"]');
+    this.emailInput = this.loginForm.locator("input[inputmode='email']");
+    this.passwordInput = this.loginForm.locator("input#password");
+    this.continueButton = this.loginForm.getByRole("button", { name: "Continue", exact: true });
     this.createAccountLink = this.page.getByText("Create Account");
     this.googleLoginButton = this.page.locator('button[data-provider="google"]');
     this.facebookLoginButton = this.page.locator('button[data-provider="facebook"]');
@@ -28,7 +30,7 @@ export class HudlLoginPage extends BasePage {
   async loginViaEmail(email: string, password: string): Promise<void> {
     await this.enterInEmail(email);
     await this.enterInPassword(password);
-    await this.page.waitForLoadState("networkidle");
+    await this.page.waitForURL("**/home");
   }
 
   async enterInEmail(email: string): Promise<void> {
