@@ -1,7 +1,7 @@
 import { Locator, Page } from "@playwright/test";
 import { BasePage } from "./BasePage";
 
-export class HomePage extends BasePage {
+export class LandingPage extends BasePage {
   loginButton: Locator;
   hudlLogin: Locator;
   wyscoutLogin: Locator;
@@ -13,6 +13,7 @@ export class HomePage extends BasePage {
   statsbombLogin: Locator;
   balltimeLogin: Locator;
   titanLogin: Locator;
+  pageUrl: string = "https://www.hudl.com/";
 
   constructor(page: Page) {
     super(page);
@@ -29,5 +30,8 @@ export class HomePage extends BasePage {
     this.titanLogin = page.getByTestId("login-titan");
   }
 
-  
+  public async openHudlLoginPage() {
+    await this.loginButton.click();
+    await this.hudlLogin.click();
+  }
 }
