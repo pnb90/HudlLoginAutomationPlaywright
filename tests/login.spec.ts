@@ -16,8 +16,8 @@ test.describe("Navigation", () => {
 
 test.describe("Login", () => {
   test("User able to successfully log into Hudl with valid credentials", async ({ hudlLoginPage, page }) => {
-    const { EMAIL, PASSWORD } = process.env;
-    await hudlLoginPage.loginViaEmail(EMAIL, PASSWORD);
+    const { HUDLEMAIL, HUDLPASSWORD } = process.env;
+    await hudlLoginPage.loginViaEmail(HUDLEMAIL, HUDLPASSWORD);
 
     expect(page.url()).toContain("/home");
   });
@@ -30,8 +30,8 @@ test.describe("Login", () => {
   });
 
   test("User unable to login with invalid password", async ({ hudlLoginPage, page }) => {
-    const { EMAIL } = process.env;
-    await hudlLoginPage.enterInEmail(EMAIL);
+    const { HUDLEMAIL } = process.env;
+    await hudlLoginPage.enterInEmail(HUDLEMAIL);
     await hudlLoginPage.enterInPassword("badPassword");
 
     expect(hudlLoginPage.incorrectPasswordError).toBeVisible();
