@@ -1,5 +1,6 @@
 import { expect } from "@playwright/test";
 import { test } from "../fixtures/fixtures";
+import { HudlHomePage } from "../pages/HudlHomePage";
 
 test.describe("Navigation", () => {
   test("Navigate to the landing page successfully", async ({ landingPage }) => {
@@ -19,7 +20,11 @@ test.describe("Login", () => {
     const { HUDLEMAIL, HUDLPASSWORD } = process.env;
     await hudlLoginPage.loginViaEmail(HUDLEMAIL, HUDLPASSWORD);
 
-    expect(page.url()).toContain("/home");
+    const hudlHomePage = new HudlHomePage(page);
+
+    expect(hudlLoginPage.loginForm).not.toBeVisible();
+    expect(hudlHomePage.globalNavBar).toBeVisible();
+    // expect(page.url()).toContain("/home");
   });
 
   test("User unable to login with invalid email", async ({ hudlLoginPage, page }) => {
