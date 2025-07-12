@@ -1,15 +1,22 @@
 import { test as base } from "@playwright/test";
-import { HomePage } from "../pages/HomePage";
+import { LandingPage, HudlLoginPage } from "../pages";
 
 type Fixtures = {
-  homePage: HomePage;
+  landingPage: LandingPage;
+  hudlLoginPage: HudlLoginPage;
 };
 
 export const test = base.extend<Fixtures>({
-  homePage: async ({ page }, use) => {
-    const homePage = new HomePage(page);
-    await homePage.navigate();
-    await use(homePage);
+  landingPage: async ({ page }, use) => {
+    const landingPage = new LandingPage(page);
+    await landingPage.navigate(landingPage.pageUrl);
+    await use(landingPage);
+  },
+
+  hudlLoginPage: async ({ landingPage, page }, use) => {
+    const hudlLoginPage = new HudlLoginPage(page);
+    await landingPage.openHudlLoginPage();
+    await use(hudlLoginPage);
   },
 });
 
