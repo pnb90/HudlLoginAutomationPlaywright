@@ -6,6 +6,7 @@ export class HudlLoginPage extends BasePage {
   emailInput: Locator;
   passwordInput: Locator;
   continueButton: Locator;
+  editEmailButton: Locator;
   createAccountLink: Locator;
   googleLoginButton: Locator;
   facebookLoginButton: Locator;
@@ -19,6 +20,7 @@ export class HudlLoginPage extends BasePage {
     this.emailInput = this.loginForm.locator("input[inputmode='email']");
     this.passwordInput = this.loginForm.locator("input#password");
     this.continueButton = this.loginForm.getByRole("button", { name: "Continue", exact: true });
+    this.editEmailButton = this.loginForm.locator('a[data-link-name="edit-username"]');
     this.createAccountLink = this.page.getByText("Create Account");
     this.googleLoginButton = this.page.locator('button[data-provider="google"]');
     this.facebookLoginButton = this.page.locator('button[data-provider="facebook"]');
@@ -41,5 +43,9 @@ export class HudlLoginPage extends BasePage {
   async enterInPassword(password: string): Promise<void> {
     await this.passwordInput.fill(password);
     await this.continueButton.click();
+  }
+
+  async clickEditEmailButton(): Promise<void> {
+    await this.editEmailButton.click();
   }
 }

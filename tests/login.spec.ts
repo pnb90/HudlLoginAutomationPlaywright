@@ -24,22 +24,50 @@ test.describe("Login", () => {
 
     expect(hudlLoginPage.loginForm).not.toBeVisible();
     expect(hudlHomePage.globalNavBar).toBeVisible();
-    // expect(page.url()).toContain("/home");
   });
 
-  test("User unable to login with invalid email", async ({ hudlLoginPage, page }) => {
-    await hudlLoginPage.enterInEmail("badEmail");
-
-    expect(hudlLoginPage.invalidEmailError).toBeVisible();
-    expect(hudlLoginPage.invalidEmailError).toContainText("Enter a valid email.");
-  });
-
-  test("User unable to login with invalid password", async ({ hudlLoginPage, page }) => {
+  test("Clicking the edit button redirects users to the previous state without a password input", async ({
+    hudlLoginPage,
+  }) => {
     const { HUDLEMAIL } = process.env;
     await hudlLoginPage.enterInEmail(HUDLEMAIL);
-    await hudlLoginPage.enterInPassword("badPassword");
+    await hudlLoginPage.clickEditEmailButton();
 
-    expect(hudlLoginPage.incorrectPasswordError).toBeVisible();
-    expect(hudlLoginPage.incorrectPasswordError).toContainText("Your email or password is incorrect. Try again.");
+    expect(hudlLoginPage.passwordInput).not.toBeVisible();
+    expect(hudlLoginPage.emailInput).toHaveValue(HUDLEMAIL);
+  });
+
+  test.describe("Negative Login Scenarios", () => {
+    test("User unable to advance with blank email", async ({ hudlLoginPage }) => {
+      await hudlLoginPage.enterInEmail("");
+
+      expect(hudlLoginPage.passwordInput).not.toBeVisible();
+    });
+
+    test("User unable to login with invalid email", async ({ hudlLoginPage }) => {
+      await hudlLoginPage.enterInEmail("badEmail");
+
+      expect(hudlLoginPage.invalidEmailError).toBeVisible();
+      expect(hudlLoginPage.invalidEmailError).toContainText("Enter a valid email.");
+    });
+
+    test("User unable to advance without entering password", async ({ hudlLoginPage, page }) => {
+      const { HUDLEMAIL } = process.env;
+      await hudlLoginPage.enterInEmail(HUDLEMAIL);
+      await hudlLoginPage.enterInPassword("");
+      const hudlHomePage = new HudlHomePage(page);
+
+      expect(hudlLoginPage.loginForm).toBeVisible();
+      expect(hudlHomePage.globalNavBar).not.toBeVisible();
+    });
+
+    test("User unable to login with invalid password", async ({ hudlLoginPage }) => {
+      const { HUDLEMAIL } = process.env;
+      await hudlLoginPage.enterInEmail(HUDLEMAIL);
+      await hudlLoginPage.enterInPassword("badPassword");
+
+      expect(hudlLoginPage.incorrectPasswordError).toBeVisible();
+      expect(hudlLoginPage.incorrectPasswordError).toContainText("Your email or password is incorrect. Try again.");
+    });
   });
 });
