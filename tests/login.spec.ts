@@ -8,7 +8,7 @@ test.describe("Navigation", () => {
     expect(currentUrl).toEqual("https://www.hudl.com/");
   });
 
-  test("Clicking on Hudl Link navigates to Hudl login", async ({ landingPage }) => {
+  test("Clicking on Hudl link navigates to Hudl login", async ({ landingPage }) => {
     const loginPage = await landingPage.openHudlLoginPage();
     const currentUrl = loginPage.getCurrentUrl();
     expect(currentUrl).toContain("identity.hudl.com");
