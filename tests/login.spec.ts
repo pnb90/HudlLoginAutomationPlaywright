@@ -37,6 +37,18 @@ test.describe("Login", () => {
     expect(hudlLoginPage.emailInput).toHaveValue(HUDLEMAIL);
   });
 
+  test("User able to successfully login after editing email", async ({ hudlLoginPage, page }) => {
+    const { HUDLEMAIL, HUDLPASSWORD } = process.env;
+    await hudlLoginPage.enterInEmail("fakeEmail@email.com");
+    await hudlLoginPage.clickEditEmailButton();
+    await hudlLoginPage.loginViaEmail(HUDLEMAIL, HUDLPASSWORD);
+
+    const hudlHomePage = new HudlHomePage(page);
+
+    expect(hudlLoginPage.loginForm).not.toBeVisible();
+    expect(hudlHomePage.globalNavBar).toBeVisible();
+  });
+
   test.describe("Negative Login Scenarios", () => {
     test("User unable to advance with blank email", async ({ hudlLoginPage }) => {
       await hudlLoginPage.enterInEmail("");
