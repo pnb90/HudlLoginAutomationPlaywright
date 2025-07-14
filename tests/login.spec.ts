@@ -16,9 +16,17 @@ test.describe("Navigation", () => {
 });
 
 test.describe("Login", () => {
-  test("User able to successfully log into Hudl with valid credentials", async ({ hudlLoginPage, page }) => {
-    const { HUDLEMAIL, HUDLPASSWORD } = process.env;
-    await hudlLoginPage.loginViaEmail(HUDLEMAIL, HUDLPASSWORD);
+  test("User has credentials defined in their .env file", async ({ hudlLoginData }) => {
+    expect(hudlLoginData.email).toBeDefined();
+    expect(hudlLoginData.password).toBeDefined();
+  });
+
+  test("User able to successfully log into Hudl with valid credentials", async ({
+    hudlLoginPage,
+    hudlLoginData,
+    page,
+  }) => {
+    await hudlLoginPage.loginViaEmail(hudlLoginData.email, hudlLoginData.password);
 
     const hudlHomePage = new HudlHomePage(page);
 
@@ -28,20 +36,19 @@ test.describe("Login", () => {
 
   test("Clicking the edit button redirects users to the previous state without a password input", async ({
     hudlLoginPage,
+    hudlLoginData,
   }) => {
-    const { HUDLEMAIL } = process.env;
-    await hudlLoginPage.enterInEmail(HUDLEMAIL);
+    await hudlLoginPage.enterInEmail(hudlLoginData.email);
     await hudlLoginPage.clickEditEmailButton();
 
     expect(hudlLoginPage.passwordInput).not.toBeVisible();
-    expect(hudlLoginPage.emailInput).toHaveValue(HUDLEMAIL);
+    expect(hudlLoginPage.emailInput).toHaveValue(hudlLoginData.email);
   });
 
-  test("User able to successfully login after editing email", async ({ hudlLoginPage, page }) => {
-    const { HUDLEMAIL, HUDLPASSWORD } = process.env;
+  test("User able to successfully login after editing email", async ({ hudlLoginPage, hudlLoginData, page }) => {
     await hudlLoginPage.enterInEmail("fakeEmail@email.com");
     await hudlLoginPage.clickEditEmailButton();
-    await hudlLoginPage.loginViaEmail(HUDLEMAIL, HUDLPASSWORD);
+    await hudlLoginPage.loginViaEmail(hudlLoginData.email, hudlLoginData.password);
 
     const hudlHomePage = new HudlHomePage(page);
 
@@ -63,9 +70,8 @@ test.describe("Login", () => {
       expect(hudlLoginPage.invalidEmailError).toContainText("Enter a valid email.");
     });
 
-    test("User unable to advance without entering password", async ({ hudlLoginPage, page }) => {
-      const { HUDLEMAIL } = process.env;
-      await hudlLoginPage.enterInEmail(HUDLEMAIL);
+    test("User unable to advance without entering password", async ({ hudlLoginPage, hudlLoginData, page }) => {
+      await hudlLoginPage.enterInEmail(hudlLoginData.email);
       await hudlLoginPage.enterInPassword("");
       const hudlHomePage = new HudlHomePage(page);
 
@@ -73,9 +79,8 @@ test.describe("Login", () => {
       expect(hudlHomePage.globalNavBar).not.toBeVisible();
     });
 
-    test("User unable to login with invalid password", async ({ hudlLoginPage }) => {
-      const { HUDLEMAIL } = process.env;
-      await hudlLoginPage.enterInEmail(HUDLEMAIL);
+    test("User unable to login with invalid password", async ({ hudlLoginPage, hudlLoginData }) => {
+      await hudlLoginPage.enterInEmail(hudlLoginData.email);
       await hudlLoginPage.enterInPassword("badPassword");
 
       expect(hudlLoginPage.incorrectPasswordError).toBeVisible();

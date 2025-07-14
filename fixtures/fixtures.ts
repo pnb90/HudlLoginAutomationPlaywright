@@ -4,6 +4,7 @@ import { LandingPage, HudlLoginPage } from "../pages";
 type Fixtures = {
   landingPage: LandingPage;
   hudlLoginPage: HudlLoginPage;
+  hudlLoginData: { email: string; password: string };
 };
 
 export const test = base.extend<Fixtures>({
@@ -17,6 +18,10 @@ export const test = base.extend<Fixtures>({
     const hudlLoginPage = new HudlLoginPage(page);
     await landingPage.openHudlLoginPage();
     await use(hudlLoginPage);
+  },
+
+  hudlLoginData: async ({}, use) => {
+    await use({ email: process.env.HUDLEMAIL as string, password: process.env.HUDLPASSWORD as string });
   },
 });
 
