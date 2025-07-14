@@ -7,10 +7,6 @@ export class HudlLoginPage extends BasePage {
   passwordInput: Locator;
   continueButton: Locator;
   editEmailButton: Locator;
-  createAccountLink: Locator;
-  googleLoginButton: Locator;
-  facebookLoginButton: Locator;
-  appleLoginButton: Locator;
   invalidEmailError: Locator;
   incorrectPasswordError: Locator;
 
@@ -21,10 +17,6 @@ export class HudlLoginPage extends BasePage {
     this.passwordInput = this.loginForm.locator("input#password");
     this.continueButton = this.loginForm.getByRole("button", { name: "Continue", exact: true });
     this.editEmailButton = this.loginForm.locator('a[data-link-name="edit-username"]');
-    this.createAccountLink = this.page.getByText("Create Account");
-    this.googleLoginButton = this.page.locator('button[data-provider="google"]');
-    this.facebookLoginButton = this.page.locator('button[data-provider="facebook"]');
-    this.appleLoginButton = this.page.locator('button[data-provider="apple"]');
     this.invalidEmailError = this.page.locator("span#error-element-username");
     this.incorrectPasswordError = this.page.locator("span#error-element-password");
   }

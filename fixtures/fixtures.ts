@@ -1,5 +1,6 @@
 import { test as base } from "@playwright/test";
-import { LandingPage, HudlLoginPage } from "../pages";
+import { HudlLoginPage } from "../pages/HudlLoginPage";
+import { LandingPage } from "../pages/LandingPage";
 
 type Fixtures = {
   landingPage: LandingPage;
@@ -10,13 +11,12 @@ type Fixtures = {
 export const test = base.extend<Fixtures>({
   landingPage: async ({ page }, use) => {
     const landingPage = new LandingPage(page);
-    await landingPage.navigate(landingPage.pageUrl);
+    await landingPage.navigate();
     await use(landingPage);
   },
 
-  hudlLoginPage: async ({ landingPage, page }, use) => {
-    const hudlLoginPage = new HudlLoginPage(page);
-    await landingPage.openHudlLoginPage();
+  hudlLoginPage: async ({ landingPage }, use) => {
+    const hudlLoginPage = await landingPage.openHudlLoginPage();
     await use(hudlLoginPage);
   },
 
