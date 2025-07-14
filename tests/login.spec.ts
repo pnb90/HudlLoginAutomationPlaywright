@@ -3,14 +3,14 @@ import { test } from "../fixtures/fixtures";
 import { HudlHomePage } from "../pages/HudlHomePage";
 
 test.describe("Navigation", () => {
-  test("Navigate to the landing page successfully", async ({ landingPage }) => {
-    const currentUrl = await landingPage.getCurrentUrl();
+  test("Navigate to the landing page successfully", ({ landingPage }) => {
+    const currentUrl = landingPage.getCurrentUrl();
     expect(currentUrl).toEqual("https://www.hudl.com/");
   });
 
   test("Clicking on Hudl Link navigates to Hudl login", async ({ landingPage }) => {
-    await landingPage.openHudlLoginPage();
-    const currentUrl = await landingPage.getCurrentUrl();
+    const loginPage = await landingPage.openHudlLoginPage();
+    const currentUrl = loginPage.getCurrentUrl();
     expect(currentUrl).toContain("identity.hudl.com");
   });
 });
@@ -21,14 +21,8 @@ test.describe("Login", () => {
     expect(hudlLoginData.password).toBeDefined();
   });
 
-  test("User able to successfully log into Hudl with valid credentials", async ({
-    hudlLoginPage,
-    hudlLoginData,
-    page,
-  }) => {
-    await hudlLoginPage.loginViaEmail(hudlLoginData.email, hudlLoginData.password);
-
-    const hudlHomePage = new HudlHomePage(page);
+  test("User able to successfully log into Hudl with valid credentials", async ({ hudlLoginPage, hudlLoginData }) => {
+    const hudlHomePage = await hudlLoginPage.loginViaEmail(hudlLoginData.email, hudlLoginData.password);
 
     expect(hudlLoginPage.loginForm).not.toBeVisible();
     expect(hudlHomePage.globalNavBar).toBeVisible();
@@ -48,9 +42,7 @@ test.describe("Login", () => {
   test("User able to successfully login after editing email", async ({ hudlLoginPage, hudlLoginData, page }) => {
     await hudlLoginPage.enterInEmail("fakeEmail@email.com");
     await hudlLoginPage.clickEditEmailButton();
-    await hudlLoginPage.loginViaEmail(hudlLoginData.email, hudlLoginData.password);
-
-    const hudlHomePage = new HudlHomePage(page);
+    const hudlHomePage = await hudlLoginPage.loginViaEmail(hudlLoginData.email, hudlLoginData.password);
 
     expect(hudlLoginPage.loginForm).not.toBeVisible();
     expect(hudlHomePage.globalNavBar).toBeVisible();

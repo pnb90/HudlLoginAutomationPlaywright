@@ -15,6 +15,7 @@ export class LandingPage extends BasePage {
   public async openHudlLoginPage(): Promise<HudlLoginPage> {
     await this.loginButton.click();
     await this.hudlLogin.click();
+
     return new HudlLoginPage(this.page);
   }
 }
