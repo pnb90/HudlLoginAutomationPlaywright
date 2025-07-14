@@ -21,7 +21,16 @@ export const test = base.extend<Fixtures>({
   },
 
   hudlLoginData: async ({}, use) => {
-    await use({ email: process.env.HUDLEMAIL as string, password: process.env.HUDLPASSWORD as string });
+    const email = process.env.HUDLEMAIL as string;
+    const password = process.env.HUDLPASSWORD as string;
+
+    if (!email) {
+      throw new Error("Missing email in .env file.");
+    } else if (!password) {
+      throw new Error("Missing password in .env file.");
+    }
+
+    await use({ email: email, password: password });
   },
 });
 
