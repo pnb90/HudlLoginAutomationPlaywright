@@ -1,10 +1,6 @@
-
 # Hudl Login Automation in Playwright
 
 A test automation suite meant to do a basic test of the Hudl login flow.
-
-
-
 
 ## Environment Variables
 
@@ -13,7 +9,6 @@ To run this project, you will need to add the following environment variables to
 `HUDLEMAIL`
 
 `HUDLPASSWORD`
-
 
 ## Run Locally
 
@@ -33,17 +28,21 @@ Install dependencies
 
 ```bash
   npm install
+  npx playwright install
 ```
+
 ## Running Tests
 
 To run the Playwright tests, run the following command
 
 For headless test running:
+
 ```bash
   npx playwright test
 ```
 
 For headed/UI test running:
+
 ```bash
   npx playwright test --ui
 ```
