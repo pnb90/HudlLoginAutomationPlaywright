@@ -1,5 +1,6 @@
 import { Locator, Page } from "@playwright/test";
 import { BasePage } from "./BasePage";
+import { HudlHomePage } from "./HudlHomePage";
 
 export class HudlLoginPage extends BasePage {
   loginForm: Locator;
@@ -21,10 +22,14 @@ export class HudlLoginPage extends BasePage {
     this.incorrectPasswordError = this.page.locator("span#error-element-password");
   }
 
-  async loginViaEmail(email: string, password: string): Promise<void> {
+  async loginViaEmail(email: string, password: string): Promise<HudlHomePage> {
     await this.enterInEmail(email);
     await this.enterInPassword(password);
-    await this.page.waitForURL("**/home");
+
+    const hudlHomePage = new HudlHomePage(this.page);
+    await this.page.waitForURL(`**${hudlHomePage.route}`);
+
+    return hudlHomePage;
   }
 
   async enterInEmail(email: string): Promise<void> {

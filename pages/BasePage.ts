@@ -8,10 +8,6 @@ export abstract class BasePage {
     this.page = page;
   }
 
-  async waitForUrl(url: string): Promise<void> {
-    await this.page.waitForURL(url);
-  }
-
   async navigate(url?: string, route?: string): Promise<void> {
     let navigationUrl: string = this.baseUrl;
 
@@ -22,7 +18,6 @@ export abstract class BasePage {
     }
 
     await this.page.goto(navigationUrl);
-    await this.waitForUrl(navigationUrl);
   }
 
   getCurrentUrl(): string {
