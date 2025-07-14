@@ -10,4 +10,8 @@ export class HudlHomePage extends BasePage {
     // this test id has a typo
     this.globalNavBar = page.getByTestId("gloabl-navbar");
   }
+
+  async waitForLoad() {
+    await this.page.waitForURL(`**${this.route}`);
+  }
 }

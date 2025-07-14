@@ -27,7 +27,7 @@ export class HudlLoginPage extends BasePage {
     await this.enterInPassword(password);
 
     const hudlHomePage = new HudlHomePage(this.page);
-    await this.page.waitForURL(`**${hudlHomePage.route}`);
+    await hudlHomePage.waitForLoad();
 
     return hudlHomePage;
   }
