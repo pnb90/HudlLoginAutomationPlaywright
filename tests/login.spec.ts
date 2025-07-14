@@ -16,11 +16,6 @@ test.describe("Navigation", () => {
 });
 
 test.describe("Login", () => {
-  test("User has credentials defined in their .env file", async ({ hudlLoginData }) => {
-    expect(hudlLoginData.email).toBeTruthy();
-    expect(hudlLoginData.password).toBeTruthy();
-  });
-
   test("User able to successfully log into Hudl with valid credentials", async ({ hudlLoginPage, hudlLoginData }) => {
     const hudlHomePage = await hudlLoginPage.loginViaEmail(hudlLoginData.email, hudlLoginData.password);
 

@@ -3,9 +3,6 @@ import dotenv from "dotenv";
 
 dotenv.config({ quiet: true });
 
-/**
- * See https://playwright.dev/docs/test-configuration.
- */
 export default defineConfig({
   testDir: "./tests",
   fullyParallel: true,
